@@ -1,52 +1,82 @@
-import { createUser, checkEmail } from '../../models/auth/authModel.js'
-import AuthModel from '../../models/auth/authSchema.js'
+import UserModel from '../../models/authSchema.js'
+
+
 /**
  * User Signin
  */
-export const signin = (req, res) =>{
-    res.send("In The SignIN Page");
-    
-}
+export const signin = async (req, res) => {
+    try {
+        const {email, password} = req.body;
 
+        if(!email || !password){
+            
+            return res.status(422).json({error: `Please Enter Username or Password.`})
+
+        }
+
+        const user = await UserModel.findOne({email,password});
+
+        console.log(user);
+    
+        if(!user){
+            return res.status(422).json({error: `User Email Or Password Does not exist`})
+        }
+        
+        res.send(user);
+
+    } catch (error) {
+
+        res.status(500).json({
+            error: `"User Registration Failed!" with this error: ${error.message}`
+        });
+
+    }
+
+
+}
 
 /**
  * User Signup
  */
-export const signup = (req, res) =>{
-    
-    const {name, email, phone, work, password, cpassword} = req.body;
+export const signup = async (req, res) => {
 
-    if(!name || !email || !phone || !work || !password || !cpassword){
-        return res.status(422).json({error:"Plz Filled the fields properly"});
+    const { name, email, phone, work, password, cpassword } = req.body;
+
+    if (!name || !email || !phone || !work || !password || !cpassword) {
+        return res.status(422).json({ error: "Plz Filled the fields properly" });
     }
 
-    if(password !== cpassword){
-        return res.status(422).json({error:"Your Confirm Password does not match with Password"});
+    if (password !== cpassword) {
+        return res.status(422).json({ error: "Your Confirm Password does not match with Password" });
     }
 
-    checkEmail().then((emailExist) => {
-
-        if(emailExist){
-            return res.status(422).json({error:"Email Exist! Please Select a New One"});
+    try {
+        const emailExist = await UserModel.findOne({ email: email });
+        
+        if (emailExist) {
+            return res.status(422).json({ error: "Email Exist! Please Select a New One" });
         }
 
-    })
+        const user = new UserModel({ name, email, phone, work, password });
 
-    createUser({name, email, phone, work, password})
-    .then((result) => {
+        const newUser = await user.save();
 
-        res.status(201).json({
-            message:"User Registered Successfuly.",
-            data:result
-        });
+        console.log(newUser)
 
-    })
-    .catch((error) =>{
-        console.log(error);
+        if(newUser){
+            return res.status(201).json({
+                message: "User Registered Successfuly.",
+                data: newUser
+            });
+        }
+
+        
+    } catch{(error) => {
+
         res.status(500).json({
-            message:"User Registration Failed!",
-            error:error.message
+            error: `"User Registration Failed!" with this error: ${error.message}`
         });
-    });
+
+    }}
 
 }
