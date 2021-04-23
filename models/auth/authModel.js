@@ -1,6 +1,6 @@
 import AuthModel from './authSchema.js'
 
-export const getAllPost = async () => {
+export const getAllUsers = async () => {
     try {
 
         return await AuthModel.find();
