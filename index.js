@@ -19,7 +19,7 @@ dotenv.config();
  * DB Connection and after successful connection start Server
  */
 
-mongoose.connect(`mongodb://localhost:27017/${process.env.DATABASE}`, { 
+mongoose.connect(process.env.DATABASE, { 
     useNewUrlParser: true , 
     useCreateIndex:true,
     useUnifiedTopology: true,

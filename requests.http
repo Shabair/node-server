@@ -3,11 +3,16 @@ GET http://localhost:5000/signin HTTP/1.1
 
 ###
 
-POST http://localhost:5000/users HTTP/1.1
+POST http://localhost:5000/signup HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Mukaram"
+    "name": "Mukaram",
+    "email":"mukaram@gmail.com",
+    "phone":"123456789",
+    "work":"Developer",
+    "password":"Pakistan",
+    "cpassword":"Pakistan"
 }
 
 ###
