@@ -1,0 +1,27 @@
+
+GET http://localhost:5000/signin HTTP/1.1
+
+###
+
+POST http://localhost:5000/users HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Mukaram"
+}
+
+###
+
+DELETE  http://localhost:5000/users/607ef284e2b9f22db8ef263a HTTP/1.1
+###
+
+PUT http://localhost:5000/users HTTP/1.1
+content-type: application/json
+
+{
+    
+}
+
+###
+
+GET http://localhost:5000/users/607eeb1d9d7e363ce8ed8d03 HTTP/1.1
